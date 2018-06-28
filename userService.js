@@ -3,13 +3,20 @@ var app = express();
 var userDAO = require("./userDAO.js");
 var bodyParser = require("body-parser");
 var jsonParser = bodyParser.json();
+//step 1  npm install --save express-basic-auth
+const basicAuth = require('express-basic-auth')
+//step 2  require("express-basic-auth")
+// use the basicAuth  Definition to keep the user Information
+app.use(basicAuth({
+    users: { 'admin': 'admin' }
+}))
+//  then  you done restart and now access the services
+/// they will be denied .........
 http://localhost:5000/hello ---->
 app.get("/hello" , function(request, response){
     // get the request data
     console.log(request.params)
-
-    // write the business logic 
-
+    // write the business logic
     // respond to user
     response.end("return to user");
 });
@@ -64,7 +71,7 @@ app.put("/user", jsonParser, function(request, response){
     });
 });
 
-app.post("/user", jsonParser, function(request, response){
+app.delete("/user", jsonParser, function(request, response){
     var user = request.body;
     userDAO.create(user, function(err, result){
           response.setHeader("content-type", "application/json");
